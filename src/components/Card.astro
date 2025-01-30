@@ -1,0 +1,42 @@
+---
+import ContentCard from "./ContentCard.astro";
+import { Card as ShadcnCard } from "./ui/card";
+import { SquareArrowOutUpRight } from "lucide-react";
+
+interface Props {
+  title?: string;
+  body?: string;
+  colSpan?: string;
+  rowSpan?: string;
+  href?: string;
+  colorText?: string;
+  isProject?: boolean;
+}
+
+const { title, body, colSpan, rowSpan, href, colorText, isProject } =
+  Astro.props;
+---
+
+<ShadcnCard
+  className={`border-4 align-start relative h-auto w-full flex-none justify-start overflow-hidden p-6 ${
+    colSpan || "md:col-span-1"
+  } ${rowSpan || "row-span-1"} ${href ? "cursor-pointer hover:border-primary" : ""}`}
+>
+  {
+    href ? (
+      <a
+        href={href}
+        class={`block h-full w-full ${colorText || " "}`}
+        target={isProject ? "_blank" : "_parent"}
+      >
+        <ContentCard title={title} body={body}>
+          <slot />
+        </ContentCard>
+      </a>
+    ) : (
+      <ContentCard title={title} body={body}>
+        <slot />
+      </ContentCard>
+    )
+  }
+</ShadcnCard>

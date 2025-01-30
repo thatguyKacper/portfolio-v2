@@ -1,0 +1,35 @@
+---
+import { TECH } from "@/lib/constants";
+import Card from "../Card.astro";
+import { buttonVariants } from "@/components/ui/button";
+---
+
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="about me">
+  <div class="flex flex-col gap-2 mt-2">
+    <p class="text-sm font-light text-primary">
+      Hi, I'm Kacper, a full-stack software developer from Poland 🇵🇱.
+      <br />
+      <br />
+      My primary tools of choice includes:
+      <ul class="list-inside list-disc">
+        {
+          TECH.map((tech) => (
+            <li>
+              <a
+                href={tech.link}
+                target="_blank"
+                class={`px-0 ${buttonVariants({ variant: "link" })}`}
+              >
+                {tech.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </p>
+    <p class="text-sm font-light text-primary">
+      Beyond coding, I'm passionate about martial arts, boardgames and
+      traveling.
+    </p>
+  </div>
+</Card>

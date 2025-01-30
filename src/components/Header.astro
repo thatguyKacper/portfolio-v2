@@ -1,0 +1,51 @@
+---
+import { Button, buttonVariants } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/ModeToggle";
+import { Home } from "lucide-react";
+import Card from "./Card.astro";
+---
+
+<script is:inline>
+  document.addEventListener("astro:after-swap", function () {
+    if (localStorage.getItem("theme") === "dark")
+      document.documentElement.classList.toggle("dark", true);
+  });
+
+  const getThemePreference = () => {
+    return localStorage.getItem("theme");
+  };
+
+  const isDark = getThemePreference() === "dark";
+  document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+</script>
+
+<header
+  class="relative mx-auto grid w-full max-w-6xl gap-2 overflow-hidden p-2 sm:gap-2 sm:px-4 md:grid-cols-2 md:gap-3 md:px-6 md:py-4 lg:grid-cols-4 lg:grid-rows-2 lg:gap-4"
+>
+  <Card colSpan="md:col-span-4" rowSpan="md:row-span-2" title="navigation">
+    <nav class="flex h-9 items-center mt-2">
+      <div class="flex items-center justify-start">
+        <a
+          href="/"
+          aria-label="home"
+          rel="noreferrer"
+          class={buttonVariants({ variant: "default", size: "icon" })}
+        >
+          <Home />
+          <span class="sr-only">Home</span>
+        </a>
+      </div>
+      <div class="flex flex-1 items-center justify-end gap-2">
+        <a
+          href="https://github.com/thatguyKacper"
+          target="_blank"
+          rel="noreferrer"
+          class={buttonVariants({ variant: "default" })}
+        >
+          GitHub
+        </a>
+        <ModeToggle transition:persist client:load />
+      </div>
+    </nav>
+  </Card>
+</header>

@@ -1,0 +1,34 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import { buttonVariants } from "@/components/ui/button";
+import Card from "@/components/Card.astro";
+---
+
+<BaseLayout
+  title="404 - Not Found"
+  description="404 Error — this page was not found"
+>
+  <main
+    class="relative mx-auto grid w-full h-screen max-w-6xl gap-2 px-2 overflow-hidden sm:gap-2 sm:px-4 md:grid-cols-2 md:gap-3 md:px-6 lg:grid-cols-1 lg:grid-rows-1 lg:gap-4"
+  >
+    <Card title="404">
+      <div class="flex flex-col items-center justify-center px-8">
+        <!-- <img src="/me_hello.png" alt="404" class="mb-8 size-64" /> -->
+        <h1 class="text-4xl font-extrabold tracking-tight lg:text-5xl">
+          Page not found
+        </h1>
+        <p class="mb-4 leading-7 [&:not(:first-child)]:mt-6">
+          Sorry, we couldn't find the page you're looking for.
+        </p>
+        <a
+          href="/"
+          rel="noreferrer"
+          class={buttonVariants({ variant: "default" })}
+        >
+          Go back home</a
+        >
+      </div>
+    </Card>
+  </main>
+</BaseLayout>

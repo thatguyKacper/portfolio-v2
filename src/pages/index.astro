@@ -1,0 +1,51 @@
+---
+import "@/styles/global.css";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import IntroCard from "@/components/sections/IntroCard.astro";
+import AboutMe from "@/components/sections/AboutMe.astro";
+import Card from "@/components/Card.astro";
+import TimeZoneCard from "@/components/sections/TimeZoneCard.astro";
+import ContactsCard from "@/components/sections/ContactsCard.astro";
+import Now from "@/components/sections/Now.astro";
+import CVCard from "@/components/sections/CVCard.astro";
+import ExperienceCard from "@/components/sections/ExperienceCard.astro";
+import EmptyCard from "@/components/sections/EmptyCard.astro";
+import StudyCard from "@/components/sections/StudyCard.astro";
+import PhotoCard from "@/components/sections/PhotoCard.astro";
+import ProjectsCard from "@/components/sections/ProjectsCard.astro";
+---
+
+<BaseLayout
+  title="Kacper Wójtowicz - Full-Stack Developer"
+  description="Kacper Wójtowicz - Full-Stack Developer - Portfolio, Projects, CV, About Me, Contact, Timezone, Now, Experience, Study"
+>
+  <main
+    class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden sm:gap-2 sm:px-4 md:grid-cols-2 md:gap-3 md:px-6 lg:grid-cols-4 lg:grid-rows-4 lg:gap-4"
+  >
+    <IntroCard />
+    <PhotoCard />
+    <AboutMe />
+    <CVCard />
+    <ContactsCard />
+    <Now />
+    <!-- <Card
+      colSpan="md:col-span-1"
+      rowSpan="md:row-span-1"
+      title="projects"
+      href="/projects"
+    /> -->
+    <ProjectsCard />
+    <!-- <TimeZoneCard /> -->
+    <ExperienceCard />
+    <!-- <Card colSpan="md:col-span-1" rowSpan="md:row-span-1" title="quote">
+      <div class="flex h-full flex-col justify-between">
+        <blockquote class="mt-6 border-l-2 pl-6 italic">
+          “Anything one man can imagine, other men can make real.”
+        </blockquote>
+        <p class="mt-2 text-xs">- Jules Verne</p>
+      </div>
+    </Card> -->
+    <EmptyCard />
+    <!-- <StudyCard /> -->
+  </main>
+</BaseLayout>

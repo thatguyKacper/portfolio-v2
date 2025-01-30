@@ -1,0 +1,20 @@
+---
+interface Props {
+  title?: string;
+  body?: string;
+}
+
+const { title, body } = Astro.props;
+---
+
+<>
+  {
+    title && (
+      <h2>
+        <small class="z-20 m-0 text-base underline text-primary">{title}</small>
+      </h2>
+    )
+  }
+  {body && <p class="m-0 text-base font-light text-primary">{body}</p>}
+  <slot />
+</>

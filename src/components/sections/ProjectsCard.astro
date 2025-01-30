@@ -1,0 +1,25 @@
+---
+import { ArrowRight } from "lucide-react";
+import Card from "../Card.astro";
+import { buttonVariants } from "@/components/ui/button";
+---
+
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-1" title="projects">
+  <div class="mt-4 flex w-full justify-center">
+    <div
+      class="card card-compact md:w-112 lg:w-128 w-96 gap-2 border-[oklch(var(--p))] transition-all"
+    >
+      <div class="mt-4 flex flex-col gap-2">
+        <p class="text-sm text-muted-foreground">
+          Click to see projects I made
+        </p>
+        <div class="card-actions mt-2 flex w-full items-center justify-center">
+          <a href="/projects" class={buttonVariants({ variant: "default" })}>
+            See projects
+            <ArrowRight />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Card>

@@ -1,0 +1,36 @@
+---
+import Card from "./Card.astro";
+---
+
+<footer
+  class="relative mx-auto grid w-full max-w-6xl gap-2 overflow-hidden p-2 sm:gap-2 sm:px-4 md:grid-cols-2 md:gap-3 md:px-6 md:py-4 lg:grid-cols-4 lg:grid-rows-2 lg:gap-4"
+>
+  <Card colSpan="md:col-span-4" rowSpan="md:row-span-2" title="footer">
+    <div class="flex items-center justify-center gap-4 h-9 mt-2">
+      <p
+        class="text-center text-sm leading-loose text-muted-foreground md:text-left"
+      >
+        Built by
+        <a
+          href="https://www.linkedin.com/in/kacper-wojtowicz"
+          target="_blank"
+          rel="noreferrer"
+          class="font-medium underline underline-offset-4"
+        >
+          Kacper Wójtowicz
+        </a>
+        . with <span class="text-red-500">❤️</span> using Astro, React and Tailwind
+        CSS. The source code is available on
+        <a
+          href="https://github.com/thatguyKacper/portfolio-v2"
+          target="_blank"
+          rel="noreferrer"
+          class="font-medium underline underline-offset-4"
+        >
+          GitHub
+        </a>
+        .
+      </p>
+    </div>
+  </Card>
+</footer>

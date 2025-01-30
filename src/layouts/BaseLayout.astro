@@ -1,0 +1,26 @@
+---
+import { ClientRouter } from "astro:transitions";
+import HeadSEO from "@/components/HeadSEO.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+
+interface Props {
+  title?: string | undefined;
+  description?: string | undefined;
+  ogImage?: URL | undefined;
+}
+
+const { title, description, ogImage } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <ClientRouter />
+  </head>
+  <body class="h-min-screen bg-background font-sans antialiased">
+    <Header />
+    <slot />
+    <Footer />
+  </body>
+</html>

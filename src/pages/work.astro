@@ -1,0 +1,41 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import { EXPERIENCE } from "@/lib/constants";
+import Card from "@/components/Card.astro";
+import { buttonVariants } from "@/components/ui/button";
+---
+
+<BaseLayout title="Work" description="Places I have worked.">
+  <main
+    class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden grid-cols-1 grid-rows-1 sm:gap-2 sm:px-4 md:gap-3 md:px-6 lg:gap-4"
+  >
+    <ul>
+      {
+        EXPERIENCE.map((exp) => (
+          <li class="py-1 md:py-2 first-of-type:pt-0 last-of-type:pb-0">
+            <Card title={exp.company}>
+              <div class="mb-4 text-sm uppercase">
+                {exp.start} - {exp.end}
+              </div>
+              <a
+                href={exp.link ?? ""}
+                class={`font-semibold  text-primary pl-0 ${buttonVariants({ variant: "link" })}`}
+              >
+                {exp.company}
+              </a>
+              <div class="text-sm font-semibold">{exp.position}</div>
+              <article class="prose dark:prose-invert">
+                {exp.tasks.map((i) => (
+                  <>
+                    - {i} <br />
+                  </>
+                ))}
+              </article>
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</BaseLayout>
