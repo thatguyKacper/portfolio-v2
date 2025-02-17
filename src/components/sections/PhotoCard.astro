@@ -1,16 +1,16 @@
 ---
 import Image from "astro/components/Image.astro";
 import Card from "../Card.astro";
-import imageOfMe from "@/assets/me.jpg";
+import imageOfMe from "@/assets/me.webp";
 ---
 
 <Card colSpan="md:col-span-1" rowSpan="md:row-span-1" title="photo">
   <div class="flex justify-center items-center h-full w-full">
     <Image
-      width="200"
-      height="300"
+      width="600"
+      height="800"
       src={imageOfMe}
-      class="object-cover pointer-events-none select-none rounded-xl"
+      class="object-cover max-w-[200px] max-h-[350px] lg:max-w-[200px] lg:max-h-[350px] md:max-w-[300px] md:max-h-[450px] pointer-events-none select-none rounded-xl"
       alt="Kacper Wojtowicz"
       loading="eager"
     />

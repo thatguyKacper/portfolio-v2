@@ -4,14 +4,14 @@ import { LINKS } from "@/lib/constants";
 import { buttonVariants } from "@/components/ui/button";
 ---
 
-<Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="contact">
+<Card colSpan="md:col-span-2" rowSpan="md:row-span-1" title="contact">
   <div class="h-full mt-2 space-y-4">
     <header class="flex items-center">
       <h2 class="text-xl font-bold text-primary">
         Let's start working together!
       </h2>
     </header>
-    <address class="mt-4 flex flex-col">
+    <address class="mt-4 flex flex-col items-start">
       <h2 class="text-gray-500">Contact Details</h2>
       <a
         href={`mailto:${LINKS.mail}`}
@@ -20,7 +20,7 @@ import { buttonVariants } from "@/components/ui/button";
       >
       <!-- <p>🇵🇱 Cracow, Poland 🇵🇱</p> -->
     </address>
-    <div class="mt-4 flex w-fit flex-col">
+    <div class="mt-4 flex w-fit flex-col items-start">
       <h2 class="text-gray-500">Socials</h2>
       <ul>
         <li>
