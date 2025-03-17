@@ -2,6 +2,7 @@ export const LINKS = {
     github: 'https://github.com/thatguyKacper',
     linkedin: 'https://www.linkedin.com/in/kacper-wojtowicz',
     mail: 'kacper.m.wojtowicz@gmail.com',
+    cv: 'Kacper Wójtowicz EN.pdf'
 }
 
 export const TECH = [
