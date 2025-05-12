@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import BaseLayout from '@/layouts/BaseLayout.astro'
 
-import { EXPERIENCE } from "@/lib/constants";
-import Card from "@/components/Card.astro";
-import { buttonVariants } from "@/components/ui/button";
+import { EXPERIENCE } from '@/lib/constants'
+import Card from '@/components/Card.astro'
+import { buttonVariants } from '@/components/ui/button'
 ---
 
 <BaseLayout title="Work" description="Places I have worked.">
@@ -19,18 +19,25 @@ import { buttonVariants } from "@/components/ui/button";
                 {exp.start} - {exp.end}
               </div>
               <a
-                href={exp.link ?? ""}
-                class={`font-semibold  text-primary pl-0 ${buttonVariants({ variant: "link" })}`}
+                href={exp.link ?? ''}
+                class={`font-semibold  text-primary pl-0 ${buttonVariants({ variant: 'link' })}`}
               >
                 {exp.company}
               </a>
-              <div class="text-sm font-semibold">{exp.position}</div>
+              <div class="text-sm font-semibold mb-4">{exp.position}</div>
               <article class="prose dark:prose-invert">
-                {exp.tasks.map((i) => (
-                  <>
-                    - {i} <br />
-                  </>
-                ))}
+                <ul role="list">
+                  {exp.tasks.map((i) => (
+                    <>
+                      {i !== typeof String ? (
+                        <li class="text-sm font-semibold">
+                          <a href={i.link}>{i.name}</a>
+                        </li>
+                      ) : null}
+                      <li>- {i}</li>
+                    </>
+                  ))}
+                </ul>
               </article>
             </Card>
           </li>

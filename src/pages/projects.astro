@@ -1,15 +1,15 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import BaseLayout from '@/layouts/BaseLayout.astro'
 
-import fetchApi from "@/lib/strapi";
-import type Project from "@/interfaces/project";
-import Card from "@/components/Card.astro";
-import Image from "astro/components/Image.astro";
+import fetchApi from '@/lib/strapi'
+import type Project from '@/interfaces/project'
+import Card from '@/components/Card.astro'
+import Image from 'astro/components/Image.astro'
 
 const projects = await fetchApi<Project[]>({
-  endpoint: "projects?populate=*", // the content type to fetch
-  wrappedByKey: "data", // the key to unwrap the response
-});
+  endpoint: 'projects?populate=*', // the content type to fetch
+  wrappedByKey: 'data', // the key to unwrap the response
+})
 ---
 
 <BaseLayout title="Portfolio" description="Projects that I did">

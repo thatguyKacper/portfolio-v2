@@ -1,26 +1,26 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import fetchApi from "../../lib/strapi";
-import type Project from "@/interfaces/project";
-import Card from "@/components/Card.astro";
-import Image from "astro/components/Image.astro";
-import { ArrowRight } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import fetchApi from '../../lib/strapi'
+import type Project from '@/interfaces/project'
+import Card from '@/components/Card.astro'
+import Image from 'astro/components/Image.astro'
+import { ArrowRight } from 'lucide-react'
+import { buttonVariants } from '@/components/ui/button'
 
 export async function getStaticPaths() {
   const projects = await fetchApi<Project[]>({
-    endpoint: "projects?populate=*", // the content type to fetch
-    wrappedByKey: "data", // the key to unwrap the response
-  });
+    endpoint: 'projects?populate=*', // the content type to fetch
+    wrappedByKey: 'data', // the key to unwrap the response
+  })
 
   return projects.map((project) => ({
     params: { slug: project?.slug },
     props: project,
-  }));
+  }))
 }
-type Props = Project;
+type Props = Project
 
-const project = Astro.props;
+const project = Astro.props
 ---
 
 <BaseLayout
@@ -60,7 +60,7 @@ const project = Astro.props;
       title="description"
     >
       <div class="flex h-full flex-col">
-        <p class="m-0 text-xl font-light text-primary">
+        <p class="m-0 text-md font-light text-primary">
           {project.description}
         </p>
       </div>
@@ -83,7 +83,7 @@ const project = Astro.props;
           >
             <a
               href={project.url}
-              class={buttonVariants({ variant: "default" })}
+              class={buttonVariants({ variant: 'default' })}
             >
               Visit project page
               <ArrowRight />
