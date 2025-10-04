@@ -1,8 +1,8 @@
 ---
-import Card from "../Card.astro";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { LINKS } from "@/lib/constants";
-import { Linkedin, Github, Mail } from "lucide-react";
+import Card from '../Card.astro'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { LINKS } from '@/lib/constants'
+import { Linkedin, Github, Mail } from 'lucide-react'
 ---
 
 <Card colSpan="md:col-span-2" rowSpan="md:row-span-2" title="welcome">
@@ -11,14 +11,14 @@ import { Linkedin, Github, Mail } from "lucide-react";
       <div class="flex h-full flex-col">
         <!-- <h6 class="m-0 text-sm font-light text-gray-500">welcome</h6> -->
         <p class="m-0 text-xl font-light text-primary">
-          Hi, I'm <b class="font-bold">Kacper Wójtowicz</b>, front-end developer
-          with two years of experience in designing, developing, and maintaining
-          web applications. Skilled in front-end technologies and committed to
-          continuous learning to stay up-to-date with the evolving IT landscape.
-          Aiming to transition into a full-stack developer role and explore
-          DevOps methodology in the future. Strong communicator and team player,
-          consistently collaborating with colleagues to ensure successful
-          project outcomes.
+          Hi, I'm <b class="font-bold">Kacper Wójtowicz</b>, a web developer
+          with three years of experience in designing, developing, and
+          maintaining web applications. I specialize in frontend technologies
+          while continuously expanding my skills in backend development,
+          networking, and cloud. My ambition is to grow into a full-stack
+          developer. I value effective teamwork and collaboration, while outside
+          of work I develop my technical skills in a self-built homelab and
+          enhance discipline and focus through kickboxing trainings.
         </p>
       </div>
       <div class="flex gap-4 pb-6">
@@ -26,7 +26,7 @@ import { Linkedin, Github, Mail } from "lucide-react";
           href={LINKS.github}
           aria-label="github profile"
           target="_blank"
-          class={buttonVariants({ variant: "default", size: "icon" })}
+          class={buttonVariants({ variant: 'default', size: 'icon' })}
         >
           <Github />
           <span class="sr-only">GitHub Profile</span>
@@ -35,16 +35,15 @@ import { Linkedin, Github, Mail } from "lucide-react";
           href={LINKS.linkedin}
           aria-label="linkedin profile"
           target="_blank"
-          class={buttonVariants({ variant: "default", size: "icon" })}
+          class={buttonVariants({ variant: 'default', size: 'icon' })}
         >
           <Linkedin />
           <span class="sr-only">Linkedin Profile</span>
         </a>
         <a
-          href={LINKS.mail}
+          href={`mailto:${LINKS.mail}`}
           aria-label="mail profile"
-          target="_blank"
-          class={buttonVariants({ variant: "default", size: "icon" })}
+          class={buttonVariants({ variant: 'default', size: 'icon' })}
         >
           <Mail />
           <span class="sr-only">Email contact</span>

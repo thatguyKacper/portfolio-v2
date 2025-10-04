@@ -1,15 +1,12 @@
 ---
-import { TECH } from "@/lib/constants";
-import Card from "../Card.astro";
-import { buttonVariants } from "@/components/ui/button";
+import { TECH } from '@/lib/constants'
+import Card from '../Card.astro'
+import { buttonVariants } from '@/components/ui/button'
 ---
 
-<Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="about me">
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="stack">
   <div class="flex flex-col gap-2 mt-2">
     <p class="text-sm font-light text-primary">
-      Hi, I'm Kacper, a full-stack software developer from Poland 🇵🇱.
-      <br />
-      <br />
       My primary tools of choice includes:
       <ul class="list-inside list-disc">
         {
@@ -18,7 +15,7 @@ import { buttonVariants } from "@/components/ui/button";
               <a
                 href={tech.link}
                 target="_blank"
-                class={`px-0 ${buttonVariants({ variant: "link" })}`}
+                class={`px-0 ${buttonVariants({ variant: 'link' })}`}
               >
                 {tech.name}
               </a>
@@ -26,10 +23,6 @@ import { buttonVariants } from "@/components/ui/button";
           ))
         }
       </ul>
-    </p>
-    <p class="text-sm font-light text-primary">
-      Beyond coding, I'm passionate about martial arts, boardgames and
-      traveling.
     </p>
   </div>
 </Card>

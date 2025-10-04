@@ -6,6 +6,10 @@ import Card from '@/components/Card.astro'
 import Image from 'astro/components/Image.astro'
 import { ArrowRight } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from '@strapi/blocks-react-renderer'
 
 export async function getStaticPaths() {
   const projects = await fetchApi<Project[]>({
@@ -21,6 +25,8 @@ export async function getStaticPaths() {
 type Props = Project
 
 const project = Astro.props
+
+const projectDescription: BlocksContent = project.description
 ---
 
 <BaseLayout
@@ -59,10 +65,11 @@ const project = Astro.props
       rowSpan="lg:row-span-4"
       title="description"
     >
-      <div class="flex h-full flex-col">
-        <p class="m-0 text-md font-light text-primary">
-          {project.description}
-        </p>
+      <div class="flex h-full flex-col m-0 text-md font-light text-primary">
+        <!-- <p class="m-0 text-md font-light text-primary"> -->
+        <!-- {project.description} -->
+        <!-- </p> -->
+        <BlocksRenderer content={projectDescription} />
       </div>
     </Card>
     <Card
