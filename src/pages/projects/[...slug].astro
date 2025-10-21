@@ -11,39 +11,49 @@ import {
   type BlocksContent,
 } from '@strapi/blocks-react-renderer'
 
-export async function getStaticPaths() {
-  const projects = await fetchApi<Project[]>({
-    endpoint: 'projects?populate=*', // the content type to fetch
-    wrappedByKey: 'data', // the key to unwrap the response
+export const prerender = false
+
+const projects = await fetchApi<Project[]>({
+  endpoint: 'projects?populate=*', // the content type to fetch
+  wrappedByKey: 'data', // the key to unwrap the response
+})
+
+const { slug } = Astro.params
+const project = projects.find((project) => project.slug === slug)
+
+if (!project) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
   })
-
-  return projects.map((project) => ({
-    params: { slug: project?.slug },
-    props: project,
-  }))
 }
-type Props = Project
 
-const project = Astro.props
+if (!project.description) return ''
 
 const projectDescription: BlocksContent = project.description
 ---
 
 <BaseLayout
-  title={`Project | ${project.title}`}
-  description={`${project.title} project page`}
+  title={`Project | ${project?.title}`}
+  description={`${project?.title} project page`}
 >
   <main
     class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden sm:gap-2 sm:px-4 md:grid-cols-2 md:gap-3 md:px-6 lg:grid-cols-4 lg:grid-rows-4 lg:gap-4"
   >
-    <Card colSpan="md:col-span-4" rowSpan="md:row-span-1" title="title">
+    <Card
+      server:defer
+      colSpan="md:col-span-4"
+      rowSpan="md:row-span-1"
+      title="title"
+    >
       <header class="flex items-center">
         <h2 class="text-xl font-bold text-primary">
-          {project.title}
+          {project?.title}
         </h2>
       </header>
     </Card>
     <Card
+      server:defer
       colSpan="lg:col-span-2 md:col-span-4"
       rowSpan="lg:row-span-3"
       title="image"
@@ -52,7 +62,7 @@ const projectDescription: BlocksContent = project.description
         <Image
           width="600"
           height="400"
-          alt={project?.title}
+          alt={project?.title || ''}
           src={import.meta.env.STRAPI_URL +
             project?.image[0].formats.medium.url}
           class="object-cover pointer-events-none select-none rounded-md"
@@ -61,6 +71,7 @@ const projectDescription: BlocksContent = project.description
       </div>
     </Card>
     <Card
+      server:defer
       colSpan="lg:col-span-2 md:col-span-4"
       rowSpan="lg:row-span-4"
       title="description"
@@ -73,6 +84,7 @@ const projectDescription: BlocksContent = project.description
       </div>
     </Card>
     <Card
+      server:defer
       colSpan="lg:col-span-2 md:col-span-4"
       rowSpan="md:row-span-1"
       title="url"
