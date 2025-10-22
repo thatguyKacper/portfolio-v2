@@ -1,7 +1,7 @@
 ---
-import Card from "../Card.astro";
-import { LINKS } from "@/lib/constants";
-import { buttonVariants } from "@/components/ui/button";
+import Card from '../Card.astro'
+import { LINKS } from '@/lib/constants'
+import { buttonVariants } from '@/components/ui/button'
 ---
 
 <Card colSpan="md:col-span-2" rowSpan="md:row-span-1" title="contact">
@@ -12,29 +12,29 @@ import { buttonVariants } from "@/components/ui/button";
       </h2>
     </header>
     <address class="mt-4 flex flex-col items-start">
-      <h2 class="text-gray-500">Contact Details</h2>
+      <h2 class="text-muted-foreground">Email</h2>
       <a
         href={`mailto:${LINKS.mail}`}
         target="_blank"
-        class={`pl-0 ${buttonVariants({ variant: "link" })}`}>{LINKS.mail}</a
+        class={`pl-0 ${buttonVariants({ variant: 'link' })}`}>{LINKS.mail}</a
       >
       <!-- <p>🇵🇱 Cracow, Poland 🇵🇱</p> -->
     </address>
     <div class="mt-4 flex w-fit flex-col items-start">
-      <h2 class="text-gray-500">Socials</h2>
+      <h2 class="text-muted-foreground">Socials</h2>
       <ul>
         <li>
           <a
             href={LINKS.linkedin}
             target="_blank"
-            class={`pl-0 ${buttonVariants({ variant: "link" })}`}>Linkedin</a
+            class={`pl-0 ${buttonVariants({ variant: 'link' })}`}>Linkedin</a
           >
         </li>
         <li>
           <a
             href={LINKS.github}
             target="_blank"
-            class={`pl-0 ${buttonVariants({ variant: "link" })}`}>Github</a
+            class={`pl-0 ${buttonVariants({ variant: 'link' })}`}>Github</a
           >
         </li>
       </ul>

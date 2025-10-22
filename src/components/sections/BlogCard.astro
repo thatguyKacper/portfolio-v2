@@ -1,34 +1,55 @@
 ---
-import fetchApi from "@/lib/wp";
-import Card from "../Card.astro";
-import type Post from "@/interfaces/post";
-import { buttonVariants } from "@/components/ui/button";
+import fetchApi from '@/lib/wp'
+import Card from '../Card.astro'
+import type Post from '@/interfaces/post'
+import { buttonVariants } from '@/components/ui/button'
 
-const posts = await fetchApi<Post[]>({
-  endpoint: "posts", // the content type to fetch
-});
+let posts: Post[] = []
+let post: Post
+
+try {
+  posts = await fetchApi<Post[]>({
+    endpoint: 'posts',
+  })
+} catch (error) {
+  return new Response(null, {
+    status: 503,
+    statusText: 'Service Unavailable',
+  })
+}
+
+post = posts[posts.length - 1]
 ---
 
-<Card colSpan="md:col-span-2" rowSpan="md:row-span-1" title="blog">
-  <div class="flex h-full w-full flex-col">
-    <div>
-      {
-        posts.map((post: Post) => (
-          <div class="py-2">
-            <h3 class="text-lg font-semibold text-primary">
-              {post.title.rendered}
-            </h3>
-            <a
-              class={`text-sm text-primary pl-0 ${buttonVariants({ variant: "link" })}`}
-              href={post.link}
-              target="_blank"
-            >
-              Visit this blog post
-            </a>
-            <p class="text-sm text-gray-600">{post.excerpt.rendered}</p>
-          </div>
-        ))
-      }
-    </div>
-  </div>
-</Card>
+{
+  post ? (
+    <Card colSpan="md:col-span-2" rowSpan="md:row-span-1" title="blog">
+      <div class="flex h-full w-full flex-col">
+        <div class="py-2">
+          <h3 class="text-lg font-semibold text-primary">
+            {post.title.rendered}
+          </h3>
+          <a
+            class={`text-sm text-primary pl-0 ${buttonVariants({ variant: 'link' })}`}
+            href={post.link}
+            target="_blank"
+          >
+            Visit this blog post
+          </a>
+          <p class="text-sm text-muted-foreground">{post.excerpt.rendered}</p>
+        </div>
+      </div>
+    </Card>
+  ) : (
+    <Card colSpan="md:col-span-2" rowSpan="md:row-span-1" title="503">
+      <div class="flex flex-col items-center justify-center px-8">
+        <h1 class="text-2xl font-extrabold tracking-tight lg:text-3xl">
+          Service Unavailable
+        </h1>
+        <p class="mb-4 leading-7 [&:not(:first-child)]:mt-6">
+          Please try again later.
+        </p>
+      </div>
+    </Card>
+  )
+}

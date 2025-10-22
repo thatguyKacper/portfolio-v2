@@ -5,43 +5,85 @@ import fetchApi from '@/lib/strapi'
 import type Project from '@/interfaces/project'
 import Card from '@/components/Card.astro'
 import Image from 'astro/components/Image.astro'
+import { buttonVariants } from '@/components/ui/button'
 
 export const prerender = false
 
-const projects = await fetchApi<Project[]>({
-  endpoint: 'projects?populate=*', // the content type to fetch
-  wrappedByKey: 'data', // the key to unwrap the response
-})
+let projects: Project[] = []
+
+try {
+  projects = await fetchApi<Project[]>({
+    endpoint: 'projects?populate=*',
+    wrappedByKey: 'data',
+  })
+} catch (error) {
+  return new Response(null, {
+    status: 503,
+    statusText: 'Service Unavailable',
+  })
+}
 ---
 
-<BaseLayout title="Portfolio" description="Projects that I did">
-  <main
-    class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden grid-cols-2 grid-rows-2 sm:gap-2 sm:px-4 md:gap-3 md:px-6 lg:gap-4"
-  >
-    {
-      projects.map((project: Project) => (
-        <Card
-          server:defer
-          colSpan="col-span-2 md:col-span-1"
-          rowSpan="md:row-span-1"
-          title={project?.title}
-          href={`/projects/${project?.slug}/`}
-        >
-          <div class="flex mt-2 justify-center items-center h-full w-full">
-            <Image
-              width="600"
-              height="400"
-              alt={`project ${project?.title}`}
-              src={
-                import.meta.env.STRAPI_URL +
-                project?.image[0].formats.medium.url
-              }
-              class="object-cover pointer-events-none select-none rounded-md"
-              loading="eager"
-            />
+<BaseLayout title="Portfolio" description="Projects I have made">
+  {
+    projects.length > 0 ? (
+      <main class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden grid-cols-2 grid-rows-2 sm:gap-2 sm:px-4 md:gap-3 md:px-6 lg:gap-4">
+        {projects.map((project: Project) => (
+          <Card
+            server:defer
+            colSpan="col-span-2 md:col-span-1"
+            rowSpan="md:row-span-1"
+            title={project.title || ''}
+            href={`/projects/${project?.slug || ''}/`}
+          >
+            <div class="flex mt-2 justify-center items-center h-full w-full">
+              {project.image && (
+                <Image
+                  width="600"
+                  height="400"
+                  alt={`project ${project.title || ''}`}
+                  src={
+                    import.meta.env.STRAPI_URL +
+                    project?.image[0].formats.medium.url
+                  }
+                  class="object-cover pointer-events-none select-none rounded-md"
+                  loading="eager"
+                />
+              )}
+            </div>
+            <Card
+              slot="fallback"
+              colSpan="col-span-2 md:col-span-1"
+              rowSpan="md:row-span-1"
+              title="Project"
+            >
+              <div class="flex mt-2 justify-center items-center h-full w-full">
+                <div class="min-w-[350px] max-w-[730px] min-h-[300px] max-h-[480px]" />
+              </div>
+            </Card>
+          </Card>
+        ))}
+      </main>
+    ) : (
+      <main class="relative mx-auto grid w-full h-screen max-w-6xl gap-2 px-2 overflow-hidden sm:gap-2 sm:px-4 md:grid-cols-2 md:gap-3 md:px-6 lg:grid-cols-1 lg:grid-rows-1 lg:gap-4">
+        <Card title="503">
+          <div class="flex flex-col items-center justify-center px-8">
+            <h1 class="text-4xl font-extrabold tracking-tight lg:text-5xl">
+              Service Unavailable
+            </h1>
+            <p class="mb-4 leading-7 [&:not(:first-child)]:mt-6">
+              Please try again later.
+            </p>
+            <a
+              href="/"
+              rel="noreferrer"
+              class={buttonVariants({ variant: 'default' })}
+            >
+              Go back home
+            </a>
           </div>
         </Card>
-      ))
-    }
-  </main>
+      </main>
+    )
+  }
 </BaseLayout>

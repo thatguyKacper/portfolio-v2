@@ -39,13 +39,13 @@ export default async function fetchApi<T>({
         if (wrappedByKey) {
             data = data[wrappedByKey];
         }
-    
+
         if (wrappedByList) {
             data = data[0];
         }
-    
+
         return data as T;
-        
+
     } catch (error) {
         return new Error("Service Unavailable") as T;
     }

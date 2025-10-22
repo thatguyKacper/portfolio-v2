@@ -13,13 +13,24 @@ import {
 
 export const prerender = false
 
-const projects = await fetchApi<Project[]>({
-  endpoint: 'projects?populate=*', // the content type to fetch
-  wrappedByKey: 'data', // the key to unwrap the response
-})
-
 const { slug } = Astro.params
-const project = projects.find((project) => project.slug === slug)
+
+let projects: Project[] = []
+let project: Project | undefined
+
+try {
+  projects = await fetchApi<Project[]>({
+    endpoint: 'projects?populate=*',
+    wrappedByKey: 'data',
+  })
+} catch (error) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  })
+}
+
+project = projects.find((project) => project.slug === slug)
 
 if (!project) {
   return new Response(null, {
@@ -27,8 +38,6 @@ if (!project) {
     statusText: 'Not found',
   })
 }
-
-if (!project.description) return ''
 
 const projectDescription: BlocksContent = project.description
 ---
@@ -51,6 +60,14 @@ const projectDescription: BlocksContent = project.description
           {project?.title}
         </h2>
       </header>
+      <Card
+        slot="fallback"
+        colSpan="md:col-span-4"
+        rowSpan="md:row-span-1"
+        title="title"
+      >
+        <div class="min-h-[28px]"></div>
+      </Card>
     </Card>
     <Card
       server:defer
@@ -59,16 +76,33 @@ const projectDescription: BlocksContent = project.description
       title="image"
     >
       <div class="flex mt-2 justify-center items-center h-full w-full">
-        <Image
-          width="600"
-          height="400"
-          alt={project?.title || ''}
-          src={import.meta.env.STRAPI_URL +
-            project?.image[0].formats.medium.url}
-          class="object-cover pointer-events-none select-none rounded-md"
-          loading="eager"
-        />
+        {
+          project?.image && (
+            <Image
+              width="600"
+              height="400"
+              alt={project?.title || ''}
+              src={
+                import.meta.env.STRAPI_URL +
+                project?.image[0].formats.medium.url
+              }
+              class="object-cover pointer-events-none select-none rounded-md"
+              loading="eager"
+            />
+          )
+        }
       </div>
+      <Card
+        slot="fallback"
+        colSpan="lg:col-span-2 md:col-span-4"
+        rowSpan="lg:row-span-3"
+        title="image"
+      >
+        <div class="flex mt-2 justify-center items-center h-full w-full">
+          <div class="min-w-[350px] max-w-full min-h-[350px] max-h-[430px]">
+          </div>
+        </div>
+      </Card>
     </Card>
     <Card
       server:defer
@@ -77,11 +111,20 @@ const projectDescription: BlocksContent = project.description
       title="description"
     >
       <div class="flex h-full flex-col m-0 text-md font-light text-primary">
-        <!-- <p class="m-0 text-md font-light text-primary"> -->
-        <!-- {project.description} -->
-        <!-- </p> -->
-        <BlocksRenderer content={projectDescription} />
+        {
+          project?.description && (
+            <BlocksRenderer content={projectDescription} />
+          )
+        }
       </div>
+      <Card
+        slot="fallback"
+        colSpan="lg:col-span-2 md:col-span-4"
+        rowSpan="lg:row-span-4"
+        title="description"
+      >
+        <div class="min-w-[350px] max-w-full min-h-[350px] max-h-[480px]"></div>
+      </Card>
     </Card>
     <Card
       server:defer
@@ -93,24 +136,27 @@ const projectDescription: BlocksContent = project.description
         <div
           class="card card-compact md:w-112 lg:w-128 w-96 gap-2 border-[oklch(var(--p))] transition-all"
         >
-          <!-- <div class="mt-4 flex flex-col gap-2">
-            <p class="text-sm text-muted-foreground">
-              Click to see projects I made
-            </p> -->
           <div
             class="card-actions mt-2 flex w-full items-center justify-center"
           >
             <a
-              href={project.url}
+              href={project?.url}
               class={buttonVariants({ variant: 'default' })}
             >
               Visit project page
               <ArrowRight />
             </a>
           </div>
-          <!-- </div> -->
         </div>
       </div>
+      <Card
+        slot="fallback"
+        colSpan="lg:col-span-2 md:col-span-4"
+        rowSpan="md:row-span-1"
+        title="url"
+      >
+        <div class="min-w-[350px] max-w-full min-h-[50px] max-h-[480px]"></div>
+      </Card>
     </Card>
   </main>
 </BaseLayout>

@@ -1,7 +1,7 @@
 ---
-import Card from "../Card.astro";
-import { buttonVariants } from "@/components/ui/button";
-import { EXPERIENCE } from "@/lib/constants";
+import Card from '../Card.astro'
+import { buttonVariants } from '@/components/ui/button'
+import { EXPERIENCE } from '@/lib/constants'
 ---
 
 <Card
@@ -15,18 +15,18 @@ import { EXPERIENCE } from "@/lib/constants";
         <div class="py-2">
           <h3 class="text-lg font-semibold text-primary">{exp.position}</h3>
           <a
-            class={`text-sm text-primary pl-0 ${buttonVariants({ variant: "link" })}`}
-            href={exp?.link ?? ""}
+            class={`text-sm text-primary pl-0 ${buttonVariants({ variant: 'link' })}`}
+            href={exp?.link ?? ''}
           >
             {exp.company}
           </a>
-          <p class="text-sm text-gray-600">
+          <p class="text-sm text-muted-foreground">
             {exp.start} - {exp.end}
           </p>
         </div>
       ))
     }
-    <a href="/work" class={`pl-0 ${buttonVariants({ variant: "link" })}`}>
+    <a href="/work" class={`pl-0 ${buttonVariants({ variant: 'link' })}`}>
       View More
     </a>
   </div>
