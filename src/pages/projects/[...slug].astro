@@ -24,53 +24,34 @@ try {
     wrappedByKey: 'data',
   })
 } catch (error) {
-  return new Response(null, {
-    status: 404,
-    statusText: 'Not found',
-  })
+  return Astro.redirect('/', 500)
 }
 
 project = projects.find((project) => project.slug === slug)
 
 if (!project) {
-  return new Response(null, {
-    status: 404,
-    statusText: 'Not found',
-  })
+  return Astro.redirect('/', 404)
 }
 
 const projectDescription: BlocksContent = project.description
 ---
 
 <BaseLayout
+  server:defer
   title={`Project | ${project?.title}`}
   description={`${project?.title} project page`}
 >
   <main
     class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden sm:gap-2 sm:px-4 md:grid-cols-2 md:gap-3 md:px-6 lg:grid-cols-4 lg:grid-rows-4 lg:gap-4"
   >
-    <Card
-      server:defer
-      colSpan="md:col-span-4"
-      rowSpan="md:row-span-1"
-      title="title"
-    >
+    <Card colSpan="md:col-span-4" rowSpan="md:row-span-1" title="title">
       <header class="flex items-center">
         <h2 class="text-xl font-bold text-primary">
           {project?.title}
         </h2>
       </header>
-      <Card
-        slot="fallback"
-        colSpan="md:col-span-4"
-        rowSpan="md:row-span-1"
-        title="title"
-      >
-        <div class="min-h-[28px]"></div>
-      </Card>
     </Card>
     <Card
-      server:defer
       colSpan="lg:col-span-2 md:col-span-4"
       rowSpan="lg:row-span-3"
       title="image"
@@ -87,25 +68,13 @@ const projectDescription: BlocksContent = project.description
                 project?.image[0].formats.medium.url
               }
               class="object-cover pointer-events-none select-none rounded-md"
-              loading="eager"
+              loading="lazy"
             />
           )
         }
       </div>
-      <Card
-        slot="fallback"
-        colSpan="lg:col-span-2 md:col-span-4"
-        rowSpan="lg:row-span-3"
-        title="image"
-      >
-        <div class="flex mt-2 justify-center items-center h-full w-full">
-          <div class="min-w-[350px] max-w-full min-h-[350px] max-h-[430px]">
-          </div>
-        </div>
-      </Card>
     </Card>
     <Card
-      server:defer
       colSpan="lg:col-span-2 md:col-span-4"
       rowSpan="lg:row-span-4"
       title="description"
@@ -117,17 +86,8 @@ const projectDescription: BlocksContent = project.description
           )
         }
       </div>
-      <Card
-        slot="fallback"
-        colSpan="lg:col-span-2 md:col-span-4"
-        rowSpan="lg:row-span-4"
-        title="description"
-      >
-        <div class="min-w-[350px] max-w-full min-h-[350px] max-h-[480px]"></div>
-      </Card>
     </Card>
     <Card
-      server:defer
       colSpan="lg:col-span-2 md:col-span-4"
       rowSpan="md:row-span-1"
       title="url"
@@ -149,14 +109,43 @@ const projectDescription: BlocksContent = project.description
           </div>
         </div>
       </div>
+    </Card>
+  </main>
+  <BaseLayout
+    slot="fallback"
+    title={`Project | ${project?.title}`}
+    description={`${project?.title} project page`}
+  >
+    <main
+      class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden sm:gap-2 sm:px-4 md:grid-cols-2 md:gap-3 md:px-6 lg:grid-cols-4 lg:grid-rows-4 lg:gap-4"
+    >
+      <Card colSpan="md:col-span-4" rowSpan="md:row-span-1" title="title">
+        <div class="min-h-[28px]"></div>
+      </Card>
       <Card
-        slot="fallback"
+        colSpan="lg:col-span-2 md:col-span-4"
+        rowSpan="lg:row-span-3"
+        title="image"
+      >
+        <div class="flex mt-2 justify-center items-center h-full w-full">
+          <div class="min-w-[350px] max-w-full min-h-[350px] max-h-[430px]">
+          </div>
+        </div>
+      </Card>
+      <Card
+        colSpan="lg:col-span-2 md:col-span-4"
+        rowSpan="lg:row-span-4"
+        title="description"
+      >
+        <div class="min-w-[350px] max-w-full min-h-[350px] max-h-[480px]"></div>
+      </Card>
+      <Card
         colSpan="lg:col-span-2 md:col-span-4"
         rowSpan="md:row-span-1"
         title="url"
       >
         <div class="min-w-[350px] max-w-full min-h-[50px] max-h-[480px]"></div>
       </Card>
-    </Card>
-  </main>
+    </main>
+  </BaseLayout>
 </BaseLayout>

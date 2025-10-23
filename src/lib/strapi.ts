@@ -47,7 +47,6 @@ export default async function fetchApi<T>({
         return data as T;
 
     } catch (error) {
-        return new Error("Service Unavailable") as T;
+        throw new Error("Service Unavailable") as T;
     }
-
 }
