@@ -29,12 +29,13 @@ import { buttonVariants } from '@/components/ui/button'
                 <ul role="list">
                   {exp.tasks.map((i) => (
                     <>
-                      {i !== typeof String && (
+                      {typeof i === 'object' ? (
                         <li class="text-sm font-semibold">
                           <a href={i.link}>{i.name}</a>
                         </li>
+                      ) : (
+                        <li>- {i}</li>
                       )}
-                      <li>- {i}</li>
                     </>
                   ))}
                 </ul>
