@@ -39,8 +39,7 @@ try {
                 height="400"
                 alt={`project ${project.title || ''}`}
                 src={
-                  import.meta.env.STRAPI_URL +
-                  project?.image[0].formats.medium.url
+                  import.meta.env.STRAPI_URL + project?.image.formats.small.url
                 }
                 class="object-cover pointer-events-none select-none rounded-md"
                 loading="lazy"
