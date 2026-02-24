@@ -3,18 +3,50 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 
 import fetchApi from '@/lib/strapi'
 import type Project from '@/interfaces/project'
+import type Category from '@/interfaces/category'
+import type Client from '@/interfaces/client'
 import Card from '@/components/Card.astro'
 import Image from 'astro/components/Image.astro'
+import { buttonVariants } from '@/components/ui/button'
+import { ArrowRight } from 'lucide-react'
 
 export const prerender = false
 
+let categories: Category[] = []
+let clients: Client[] = []
 let projects: Project[] = []
 
+const { searchParams } = Astro.url
+const selectedCategory = searchParams.get('category')
+const selectedClient = searchParams.get('client')
+
 try {
-  projects = await fetchApi<Project[]>({
-    endpoint: 'projects?populate=*',
+  categories = await fetchApi<Category[]>({
+    endpoint: 'categories?populate=*',
     wrappedByKey: 'data',
   })
+
+  if (selectedCategory === 'professional') {
+    clients = await fetchApi<Client[]>({
+      endpoint: 'clients?sort=name:asc&populate=*',
+      wrappedByKey: 'data',
+    })
+  }
+
+  if (selectedCategory) {
+    let endpoint = `projects?filters[category][slug][$eq]=${selectedCategory}`
+
+    if (selectedClient) {
+      endpoint += `&filters[client][slug][$eq]=${selectedClient}`
+    }
+
+    endpoint += '&sort=publishedAt:desc&populate=*'
+
+    projects = await fetchApi<Project[]>({
+      endpoint: endpoint,
+      wrappedByKey: 'data',
+    })
+  }
 } catch (error) {
   return Astro.redirect(500)
 }
@@ -25,29 +57,110 @@ try {
     class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden grid-cols-2 grid-rows-2 sm:gap-2 sm:px-4 md:gap-3 md:px-6 lg:gap-4"
   >
     {
-      projects.map((project: Project) => (
-        <Card
-          colSpan="col-span-2 md:col-span-1"
-          rowSpan="md:row-span-1"
-          title={project.title || ''}
-          href={`/projects/${project?.slug || ''}/`}
-        >
-          <div class="flex mt-2 justify-center items-center h-full w-full">
-            {project.image && (
-              <Image
-                width="600"
-                height="400"
-                alt={`project ${project.title || ''}`}
-                src={
-                  import.meta.env.STRAPI_URL + project?.image.formats.small.url
-                }
-                class="object-cover pointer-events-none select-none rounded-md"
-                loading="lazy"
-              />
-            )}
-          </div>
-        </Card>
-      ))
+      !selectedCategory &&
+        categories.map((category: Category) => (
+          <Card
+            colSpan="col-span-2 md:col-span-1"
+            rowSpan="md:row-span-1"
+            title={category.name || ''}
+          >
+            <div class="mt-4 flex w-full justify-center">
+              <div class="card card-compact md:w-112 lg:w-128 w-96 gap-2 border-[oklch(var(--p))] transition-all">
+                <div class="card-actions h-48 mt-2 flex w-full items-center justify-center">
+                  <a
+                    href={`/projects?category=${category.slug}`}
+                    class={buttonVariants({ variant: 'default' })}
+                  >
+                    Browse {category.name} projects
+                    <ArrowRight />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Card>
+        ))
+    }
+    {
+      selectedCategory &&
+        !selectedClient &&
+        clients.map((client: Client) => (
+          <Card
+            colSpan="col-span-2 md:col-span-1"
+            rowSpan="md:row-span-1"
+            title={client.name || ''}
+            href={`/projects?category=${selectedCategory}&client=${client.slug}`}
+          >
+            <div class="flex mt-2 justify-center items-center h-full w-full">
+              {client.image && (
+                <Image
+                  width="500"
+                  height="242"
+                  alt={`project ${client.name || ''}`}
+                  src={
+                    import.meta.env.STRAPI_URL + client?.image.formats.small.url
+                  }
+                  class="object-cover pointer-events-none select-none rounded-md"
+                  loading="lazy"
+                />
+              )}
+            </div>
+          </Card>
+        ))
+    }
+    {
+      selectedCategory === 'personal' &&
+        projects.map((project: Project) => (
+          <Card
+            colSpan="col-span-2 md:col-span-1"
+            rowSpan="md:row-span-1"
+            title={project.name || ''}
+            href={`/projects/${project?.slug || ''}/`}
+          >
+            <div class="flex mt-2 justify-center items-center h-full w-full">
+              {project.image && (
+                <Image
+                  width="500"
+                  height="242"
+                  alt={`project ${project.name || ''}`}
+                  src={
+                    import.meta.env.STRAPI_URL +
+                    project?.image.formats.small.url
+                  }
+                  class="object-cover pointer-events-none select-none rounded-md"
+                  loading="lazy"
+                />
+              )}
+            </div>
+          </Card>
+        ))
+    }
+    {
+      selectedCategory === 'professional' &&
+        selectedClient &&
+        projects.map((project: Project) => (
+          <Card
+            colSpan="col-span-2 md:col-span-1"
+            rowSpan="md:row-span-1"
+            title={project.name || ''}
+            href={`/projects/${project?.slug || ''}/`}
+          >
+            <div class="flex mt-2 justify-center items-center h-full w-full">
+              {project.image && (
+                <Image
+                  width="500"
+                  height="242"
+                  alt={`project ${project.name || ''}`}
+                  src={
+                    import.meta.env.STRAPI_URL +
+                    project?.image.formats.small.url
+                  }
+                  class="object-cover pointer-events-none select-none rounded-md"
+                  loading="lazy"
+                />
+              )}
+            </div>
+          </Card>
+        ))
     }
   </main>
   <BaseLayout
@@ -58,58 +171,23 @@ try {
     <main
       class="relative mx-auto grid w-full max-w-6xl gap-2 px-2 overflow-hidden grid-cols-2 grid-rows-2 sm:gap-2 sm:px-4 md:gap-3 md:px-6 lg:gap-4"
     >
-      <Card
-        colSpan="col-span-2 md:col-span-1"
-        rowSpan="md:row-span-1"
-        title="Project"
-      >
-        <div class="flex mt-2 justify-center items-center h-full w-full">
-          <div
-            class="min-w-[350px] max-w-[730px] min-h-[300px] max-h-[480px] flex flex-col items-center justify-center px-8"
+      {
+        Array.from({ length: 4 }).map((_, i) => (
+          <Card
+            colSpan="col-span-2 md:col-span-1"
+            rowSpan="md:row-span-1"
+            title=""
           >
-            <h1 class="text-lg font-semibold text-primary">Loading...</h1>
-          </div>
-        </div>
-      </Card>
-      <Card
-        colSpan="col-span-2 md:col-span-1"
-        rowSpan="md:row-span-1"
-        title="Project"
-      >
-        <div class="flex mt-2 justify-center items-center h-full w-full">
-          <div
-            class="min-w-[350px] max-w-[730px] min-h-[300px] max-h-[480px] flex flex-col items-center justify-center px-8"
-          >
-            <h1 class="text-lg font-semibold text-primary">Loading...</h1>
-          </div>
-        </div>
-      </Card>
-      <Card
-        colSpan="col-span-2 md:col-span-1"
-        rowSpan="md:row-span-1"
-        title="Project"
-      >
-        <div class="flex mt-2 justify-center items-center h-full w-full">
-          <div
-            class="min-w-[350px] max-w-[730px] min-h-[300px] max-h-[480px] flex flex-col items-center justify-center px-8"
-          >
-            <h1 class="text-lg font-semibold text-primary">Loading...</h1>
-          </div>
-        </div>
-      </Card>
-      <Card
-        colSpan="col-span-2 md:col-span-1"
-        rowSpan="md:row-span-1"
-        title="Project"
-      >
-        <div class="flex mt-2 justify-center items-center h-full w-full">
-          <div
-            class="min-w-[350px] max-w-[730px] min-h-[300px] max-h-[480px] flex flex-col items-center justify-center px-8"
-          >
-            <h1 class="text-lg font-semibold text-primary">Loading...</h1>
-          </div>
-        </div>
-      </Card>
+            <div class="flex mt-2 justify-center items-center h-full w-full animate-pulse">
+              <div class="w-full max-w-[500px] max-h-[242px] flex flex-col items-center justify-center px-8">
+                <div class="w-full h-48 bg-secondary/30 rounded-md mb-4" />
+                <div class="h-4 w-1/2 bg-secondary/30 rounded mb-2" />
+                <div class="h-4 w-1/4 bg-secondary/30 rounded" />
+              </div>
+            </div>
+          </Card>
+        ))
+      }
     </main>
   </BaseLayout>
 </BaseLayout>
